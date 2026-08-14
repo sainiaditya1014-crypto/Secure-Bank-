@@ -68,3 +68,9 @@ app.delete('/api/accounts/:id', auth, async (req, res) => { const [r] = await db
 app.get('/api/accounts/search', auth, async (req, res) => { const query = `%${req.query.q || ''}%`; const [rows] = await db.execute('SELECT * FROM accounts WHERE user_id=? AND (account_number LIKE ? OR account_type LIKE ?)', [req.user.id, query, query]); res.json(rows); });
 app.get('*', (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.listen(process.env.PORT || 5000, () => console.log(`SecureBank running on port ${process.env.PORT || 5000}`));
+// app.listen wala line hata do ya conditionally rakho:
+if (require.main === module) {
+  app.listen(process.env.PORT || 5000, () => console.log(`SecureBank running on port ${process.env.PORT || 5000}`));
+}
+
+module.exports = app;
